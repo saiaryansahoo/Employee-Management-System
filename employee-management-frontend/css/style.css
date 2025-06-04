@@ -1,0 +1,115 @@
+/* Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
+/* Base Styles */
+body {
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  overflow: hidden;
+}
+
+/* Floating Background Bubbles */
+body::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+  animation: float 15s infinite linear;
+  z-index: -1;
+}
+
+@keyframes float {
+  0% { transform: translate(0, 0) rotate(0deg); }
+  50% { transform: translate(-50px, -50px) rotate(180deg); }
+  100% { transform: translate(0, 0) rotate(360deg); }
+}
+
+/* Login Container */
+.login-container {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  width: 350px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transform: scale(1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.login-container:hover {
+  transform: scale(1.02);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+}
+
+.logo {
+  margin-bottom: 20px;
+}
+
+h2 {
+  color: #333;
+  margin-bottom: 25px;
+  font-weight: 600;
+}
+
+/* Input Fields */
+.input-field {
+  display: block;
+  margin: 15px auto;
+  padding: 12px 20px;
+  width: 80%;
+  border: none;
+  border-radius: 30px;
+  background: rgba(0, 0, 0, 0.05);
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.input-field:focus {
+  outline: none;
+  background: rgba(74, 108, 247, 0.1);
+  box-shadow: 0 0 0 2px rgba(74, 108, 247, 0.3);
+}
+
+/* Login Button */
+.login-btn {
+  padding: 12px 30px;
+  background: linear-gradient(to right, #4A6CF7, #6A5ACD);
+  color: white;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  margin-top: 20px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(74, 108, 247, 0.4);
+}
+
+.login-btn:hover {
+  background: linear-gradient(to right, #3A5BD9, #5A4ACD);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(74, 108, 247, 0.6);
+}
+
+.login-btn:active {
+  transform: translateY(0);
+}
+
+/* Footer */
+.footer {
+  margin-top: 30px;
+  color: #777;
+  font-size: 12px;
+}

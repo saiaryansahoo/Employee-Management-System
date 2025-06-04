@@ -1,0 +1,98 @@
+/* Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
+/* Base Styles */
+body {
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  overflow: hidden;
+}
+
+/* Dashboard Container */
+.dashboard-container {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  width: 400px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.dashboard-header {
+  margin-bottom: 30px;
+}
+
+.dashboard-header h1 {
+  color: #333;
+  font-weight: 600;
+  margin-top: 15px;
+}
+
+.admin-name {
+  color: #4A6CF7;
+}
+
+/* Buttons */
+.dashboard-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.dashboard-buttons a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 14px;
+  background: linear-gradient(to right, #4A6CF7, #6A5ACD);
+  color: white;
+  text-decoration: none;
+  border-radius: 30px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(74, 108, 247, 0.4);
+}
+
+.dashboard-buttons a:hover {
+  background: linear-gradient(to right, #3A5BD9, #5A4ACD);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(74, 108, 247, 0.6);
+}
+
+.dashboard-buttons a:active {
+  transform: translateY(0);
+}
+
+.logout-btn {
+  background: linear-gradient(to right, #FF416C, #FF4B2B) !important;
+  box-shadow: 0 4px 15px rgba(255, 65, 108, 0.4) !important;
+}
+
+.logout-btn:hover {
+  background: linear-gradient(to right, #E03A5F, #E03A2B) !important;
+  box-shadow: 0 6px 20px rgba(255, 65, 108, 0.6) !important;
+}
+
+/* Footer */
+.dashboard-footer {
+  margin-top: 30px;
+  color: #777;
+  font-size: 12px;
+}
+
+.dashboard-footer p {
+  margin: 0;
+}
+
+/* Icons */
+.fas {
+  font-size: 16px;
+}
