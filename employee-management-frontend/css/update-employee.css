@@ -1,14 +1,11 @@
-/* Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
 
-/* Base Reset */
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
-/* Responsive Body */
 body {
   font-family: 'Poppins', sans-serif;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -16,7 +13,6 @@ body {
   overflow-x: hidden;
 }
 
-/* Page Wrapper */
 .page-wrapper {
   display: flex;
   justify-content: center;
@@ -26,7 +22,6 @@ body {
   width: 100%;
 }
 
-/* Form Container */
 .form-container {
   background: rgba(255, 255, 255, 0.95);
   padding: 30px;
@@ -50,7 +45,6 @@ body {
   font-size: 1.5rem;
 }
 
-/* Input Groups */
 .input-group {
   position: relative;
   margin-bottom: 20px;
@@ -66,7 +60,8 @@ body {
   font-size: 16px;
 }
 
-.input-group input {
+.input-group input,
+.input-group select {
   width: 100%;
   padding: 14px 14px 14px 40px;
   border: 1px solid rgba(0, 0, 0, 0.1);
@@ -75,6 +70,7 @@ body {
   font-size: 14px;
   background: rgba(0, 0, 0, 0.02);
   transition: all 0.3s ease;
+  appearance: none;
 }
 
 .input-group input[readonly] {
@@ -82,20 +78,19 @@ body {
   color: #666;
 }
 
-.input-group input:focus {
+.input-group input:focus,
+.input-group select:focus {
   outline: none;
   border-color: #4A6CF7;
   background: rgba(74, 108, 247, 0.05);
   box-shadow: 0 0 0 3px rgba(74, 108, 247, 0.1);
 }
 
-/* Date Input Fix */
 input[type="date"]::-webkit-calendar-picker-indicator {
   filter: invert(0.5);
   cursor: pointer;
 }
 
-/* Submit Button */
 .submit-btn {
   width: 100%;
   padding: 14px;
@@ -126,7 +121,6 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   transform: translateY(0);
 }
 
-/* Back Link */
 .back-link {
   display: flex;
   align-items: center;
@@ -144,21 +138,21 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   color: #4A6CF7;
 }
 
-/* Responsive Adjustments */
 @media (max-width: 600px) {
   .page-wrapper {
     padding: 20px 15px;
   }
-  
+
   .form-container {
     padding: 25px;
   }
-  
+
   .form-header h2 {
     font-size: 1.3rem;
   }
-  
-  .input-group input {
+
+  .input-group input,
+  .input-group select {
     padding: 12px 12px 12px 38px;
   }
 }
@@ -166,9 +160,9 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 @media (max-width: 400px) {
   .form-container {
     padding: 20px 15px;
-  border-radius: 12px;
+    border-radius: 12px;
   }
-  
+
   .submit-btn {
     padding: 12px;
     font-size: 15px;

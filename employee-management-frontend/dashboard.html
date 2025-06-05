@@ -7,6 +7,15 @@
   <link rel="stylesheet" href="css/dashboard.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    /* Override animate.css durations */
+    .animate__animated.animate__fadeIn {
+      --animate-duration: 1s;
+    }
+    .animate__animated.animate__fadeInUp {
+      --animate-duration: 1s;
+    }
+  </style>
 </head>
 <body>
   <div class="dashboard-container animate__animated animate__fadeIn">
@@ -21,16 +30,16 @@
       <a href="add-employee.html" class="animate__animated animate__fadeInUp">
         <i class="fas fa-user-plus"></i> Add Employee
       </a>
-      <a href="view-employee.html" class="animate__animated animate__fadeInUp animate__delay-1s">
+      <a href="view-employee.html" class="animate__animated animate__fadeInUp animate__delay-1s" style="--animate-delay: 0.3s">
         <i class="fas fa-users"></i> View Employees
       </a>
-      <a href="update-employee.html" class="animate__animated animate__fadeInUp animate__delay-2s">
+      <a href="update-employee.html" class="animate__animated animate__fadeInUp animate__delay-2s" style="--animate-delay: 0.4s">
         <i class="fas fa-user-edit"></i> Update Employee
       </a>
-      <a href="delete-employee.html" class="animate__animated animate__fadeInUp animate__delay-3s">
+      <a href="delete-employee.html" class="animate__animated animate__fadeInUp animate__delay-3s" style="--animate-delay: 0.5s">
         <i class="fas fa-user-times"></i> Delete Employee
       </a>
-      <a href="index.html" class="logout-btn animate__animated animate__fadeInUp animate__delay-4s">
+      <a href="index.html" class="logout-btn animate__animated animate__fadeInUp animate__delay-4s" style="--animate-delay: 0.6s">
         <i class="fas fa-sign-out-alt"></i> Logout
       </a>
     </div>
