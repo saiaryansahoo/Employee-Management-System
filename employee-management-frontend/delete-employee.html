@@ -2,21 +2,139 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Delete Employee - Employee Management</title>
   <link rel="stylesheet" href="css/delete-employee.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-  <div class="delete-container">
-    <h2>Delete Employee</h2>
+  <div class="page-wrapper">
+    <div class="delete-container">
+      <div class="form-header">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#ff4444" width="48px" height="48px">
+          <path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm5 13.59L15.59 17 12 13.41 8.41 17 7 15.59 10.59 12 7 8.41 8.41 7 12 10.59 15.59 7 17 8.41 13.41 12 17 15.59z"/>
+        </svg>
+        <h2>Delete Employee</h2>
+      </div>
 
-    <form action="#" method="post">
-      <input type="text" name="identifier" placeholder="Enter Employee ID or Email" required>
-      <button type="submit">Delete</button>
-    </form>
+      <!-- Employee Selector -->
+      <div class="input-group">
+        <label for="employeeSelect">Select Employee to Delete</label>
+        <select id="employeeSelect" required>
+          <option value="">-- Choose an Employee --</option>
+        </select>
+      </div>
 
-    <p class="note">⚠️ This action is permanent and cannot be undone.</p>
+      <!-- Confirmation Form -->
+      <form id="deleteForm" onsubmit="deleteEmployee(event)">
+        <div class="input-group">
+          <i class="fas fa-id-card"></i>
+          <input type="text" id="empId" readonly>
+        </div>
+        
+        <div class="input-group">
+          <i class="fas fa-user"></i>
+          <input type="text" id="empName" readonly>
+        </div>
 
-    <a href="dashboard.html" class="back-link">⬅ Back to Dashboard</a>
+        <p class="warning-note">
+          <i class="fas fa-exclamation-triangle"></i> This action is permanent and cannot be undone.
+        </p>
+
+        <button type="submit" class="delete-btn">
+          <i class="fas fa-trash-alt"></i> Confirm Delete
+        </button>
+        
+        <a href="dashboard.html" class="back-link">
+          <i class="fas fa-arrow-left"></i> Back to Dashboard
+        </a>
+      </form>
+
+      <p id="status-message" style="text-align:center; margin-top:15px;"></p>
+    </div>
   </div>
+
+  <script>
+    const select = document.getElementById("employeeSelect");
+    const empId = document.getElementById("empId");
+    const empName = document.getElementById("empName");
+    const statusMsg = document.getElementById("status-message");
+
+    // Load all employees in dropdown
+    fetch("http://localhost:8080/api/employees")
+      .then(res => res.json())
+      .then(data => {
+        data.forEach(emp => {
+          const option = document.createElement("option");
+          option.value = emp.id;
+          option.textContent = `ID ${emp.id} - ${emp.name}`;
+          select.appendChild(option);
+        });
+      })
+      .catch(() => {
+        statusMsg.textContent = "❌ Failed to load employees";
+        statusMsg.style.color = "red";
+      });
+
+    // Load selected employee data
+    select.addEventListener("change", function() {
+      const id = this.value;
+      if (!id) {
+        empId.value = "";
+        empName.value = "";
+        return;
+      }
+
+      fetch(`http://localhost:8080/api/employees/${id}`)
+        .then(res => res.json())
+        .then(emp => {
+          empId.value = emp.id;
+          empName.value = emp.name;
+        })
+        .catch(() => {
+          statusMsg.textContent = "❌ Failed to load employee data";
+          statusMsg.style.color = "red";
+        });
+    });
+
+    // Delete employee
+    function deleteEmployee(e) {
+      e.preventDefault();
+      const id = select.value;
+      
+      if (!id) {
+        statusMsg.textContent = "⚠️ Please select an employee first";
+        statusMsg.style.color = "orange";
+        return;
+      }
+
+      if (!confirm(`Are you sure you want to delete employee ${empName.value} (ID: ${id})?`)) {
+        return;
+      }
+
+      fetch(`http://localhost:8080/api/employees/delete/${id}`, {
+        method: "DELETE"
+      })
+      .then(res => {
+        if (res.ok) {
+          statusMsg.textContent = "✅ Employee deleted successfully";
+          statusMsg.style.color = "green";
+          // Reset form
+          select.value = "";
+          empId.value = "";
+          empName.value = "";
+          // Remove deleted option
+          select.querySelector(`option[value="${id}"]`).remove();
+        } else {
+          statusMsg.textContent = "❌ Delete failed";
+          statusMsg.style.color = "red";
+        }
+      })
+      .catch(() => {
+        statusMsg.textContent = "❌ Server error";
+        statusMsg.style.color = "red";
+      });
+    }
+  </script>
 </body>
 </html>

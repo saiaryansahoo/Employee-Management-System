@@ -21,33 +21,40 @@
           <th>Salary</th>
         </tr>
       </thead>
-      <tbody>
-        <!-- Sample static rows -->
-        <tr>
-          <td>1</td>
-          <td>Rahul Sharma</td>
-          <td>rahul@example.com</td>
-          <td>9876543210</td>
-          <td>Software Engineer</td>
-          <td>IT</td>
-          <td>2023-05-10</td>
-          <td>60000</td>
-        </tr>
-        <tr>
-          <td>2</td>
-          <td>Priya Mehta</td>
-          <td>priya@example.com</td>
-          <td>9876501234</td>
-          <td>HR Manager</td>
-          <td>HR</td>
-          <td>2022-11-20</td>
-          <td>55000</td>
-        </tr>
-        <!-- More rows can go here -->
+      <tbody id="employee-table-body">
+        <!-- Employees will be loaded here dynamically -->
       </tbody>
     </table>
 
     <a href="dashboard.html" class="back-link">⬅ Back to Dashboard</a>
   </div>
+
+  <script>
+    // Fetch and display employees on page load
+    fetch("http://localhost:8080/api/employees")
+      .then(response => response.json())
+      .then(data => {
+        const tbody = document.getElementById("employee-table-body");
+        data.forEach(emp => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${emp.id}</td>
+            <td>${emp.name}</td>
+            <td>${emp.email}</td>
+            <td>${emp.phone}</td>
+            <td>${emp.designation}</td>
+            <td>${emp.department}</td>
+            <td>${emp.joiningDate}</td>
+            <td>${emp.salary}</td>
+          `;
+          tbody.appendChild(row);
+        });
+      })
+      .catch(error => {
+        console.error("Error fetching employees:", error);
+        const tbody = document.getElementById("employee-table-body");
+        tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; color:red;">Error loading data</td></tr>`;
+      });
+  </script>
 </body>
 </html>
