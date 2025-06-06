@@ -15,14 +15,49 @@
       </svg>
     </div>
     <h2 class="animate__animated animate__fadeInDown">Admin Login</h2>
-    <form action="dashboard.html" method="get" class="animate__animated animate__fadeInUp">
-      <input type="text" placeholder="Username" required class="input-field">
-      <input type="password" placeholder="Password" required class="input-field">
+
+    <form onsubmit="login(event)" class="animate__animated animate__fadeInUp">
+      <input type="text" id="username" placeholder="Username" required class="input-field">
+      <input type="password" id="password" placeholder="Password" required class="input-field">
       <button type="submit" class="login-btn">Login</button>
     </form>
+
+    <p id="login-error" style="text-align:center; color:red; margin-top:10px;"></p>
+
     <div class="footer animate__animated animate__fadeIn">
       <p>Employee Management System © 2025</p>
     </div>
   </div>
+
+  <script>
+    function login(e) {
+      e.preventDefault();
+
+      const username = document.getElementById("username").value;
+      const password = document.getElementById("password").value;
+
+      fetch("http://localhost:8080/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ username, password })
+      })
+      .then(res => {
+        if (!res.ok) {
+          throw new Error("Invalid credentials");
+        }
+        return res.json();
+      })
+      .then(data => {
+        localStorage.setItem("token", data.token); // 🔐 Save token
+        window.location.href = "dashboard.html";   // ✅ Redirect after login
+      })
+      .catch(err => {
+        document.getElementById("login-error").textContent = "❌ Invalid username or password";
+        console.error("Login failed:", err);
+      });
+    }
+  </script>
 </body>
 </html>

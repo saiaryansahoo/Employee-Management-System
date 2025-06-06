@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Delete Employee - Employee Management</title>
-  <link rel="stylesheet" href="css/delete-employee.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="css/delete-employee.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
 </head>
 <body>
   <div class="page-wrapper">
     <div class="delete-container">
       <div class="form-header">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#ff4444" width="48px" height="48px">
-          <path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm5 13.59L15.59 17 12 13.41 8.41 17 7 15.59 10.59 12 7 8.41 8.41 7 12 10.59 15.59 7 17 8.41 13.41 12 17 15.59z"/>
+          <path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm5 13.59L15.59 17 12 13.41 8.41 17 7 15.59 10.59 12 7 8.41 8.41 7 12 10.59 15.59 7 17 8.41 13.41 12 17 15.59z" />
         </svg>
         <h2>Delete Employee</h2>
       </div>
@@ -29,12 +29,12 @@
       <form id="deleteForm" onsubmit="deleteEmployee(event)">
         <div class="input-group">
           <i class="fas fa-id-card"></i>
-          <input type="text" id="empId" readonly>
+          <input type="text" id="empId" readonly />
         </div>
-        
+
         <div class="input-group">
           <i class="fas fa-user"></i>
-          <input type="text" id="empName" readonly>
+          <input type="text" id="empName" readonly />
         </div>
 
         <p class="warning-note">
@@ -44,7 +44,7 @@
         <button type="submit" class="delete-btn">
           <i class="fas fa-trash-alt"></i> Confirm Delete
         </button>
-        
+
         <a href="dashboard.html" class="back-link">
           <i class="fas fa-arrow-left"></i> Back to Dashboard
         </a>
@@ -60,9 +60,22 @@
     const empName = document.getElementById("empName");
     const statusMsg = document.getElementById("status-message");
 
-    // Load all employees in dropdown
-    fetch("http://localhost:8080/api/employees")
-      .then(res => res.json())
+    // Get token from localStorage (change this if stored somewhere else)
+    const token = localStorage.getItem("token");
+    if (!token) {
+      statusMsg.style.color = "red";
+      statusMsg.textContent = "❌ You are not logged in. Please login first.";
+    } else {
+      // Load all employees in dropdown with Authorization header
+      fetch("http://localhost:8080/api/employees", {
+        headers: {
+          "Authorization": "Bearer " + token
+        }
+      })
+      .then(res => {
+        if (!res.ok) throw new Error("Unauthorized or failed to fetch employees");
+        return res.json();
+      })
       .then(data => {
         data.forEach(emp => {
           const option = document.createElement("option");
@@ -72,12 +85,13 @@
         });
       })
       .catch(() => {
-        statusMsg.textContent = "❌ Failed to load employees";
         statusMsg.style.color = "red";
+        statusMsg.textContent = "❌ Failed to load employees. Please login.";
       });
+    }
 
     // Load selected employee data
-    select.addEventListener("change", function() {
+    select.addEventListener("change", function () {
       const id = this.value;
       if (!id) {
         empId.value = "";
@@ -85,26 +99,33 @@
         return;
       }
 
-      fetch(`http://localhost:8080/api/employees/${id}`)
-        .then(res => res.json())
-        .then(emp => {
-          empId.value = emp.id;
-          empName.value = emp.name;
-        })
-        .catch(() => {
-          statusMsg.textContent = "❌ Failed to load employee data";
-          statusMsg.style.color = "red";
-        });
+      fetch(`http://localhost:8080/api/employees/${id}`, {
+        headers: {
+          "Authorization": "Bearer " + token
+        }
+      })
+      .then(res => {
+        if (!res.ok) throw new Error("Unauthorized or failed to fetch employee data");
+        return res.json();
+      })
+      .then(emp => {
+        empId.value = emp.id;
+        empName.value = emp.name;
+      })
+      .catch(() => {
+        statusMsg.style.color = "red";
+        statusMsg.textContent = "❌ Failed to load employee data.";
+      });
     });
 
     // Delete employee
     function deleteEmployee(e) {
       e.preventDefault();
       const id = select.value;
-      
+
       if (!id) {
-        statusMsg.textContent = "⚠️ Please select an employee first";
         statusMsg.style.color = "orange";
+        statusMsg.textContent = "⚠️ Please select an employee first";
         return;
       }
 
@@ -113,27 +134,31 @@
       }
 
       fetch(`http://localhost:8080/api/employees/delete/${id}`, {
-        method: "DELETE"
-      })
-      .then(res => {
-        if (res.ok) {
-          statusMsg.textContent = "✅ Employee deleted successfully";
-          statusMsg.style.color = "green";
-          // Reset form
-          select.value = "";
-          empId.value = "";
-          empName.value = "";
-          // Remove deleted option
-          select.querySelector(`option[value="${id}"]`).remove();
-        } else {
-          statusMsg.textContent = "❌ Delete failed";
-          statusMsg.style.color = "red";
+        method: "DELETE",
+        headers: {
+          "Authorization": "Bearer " + token
         }
       })
-      .catch(() => {
-        statusMsg.textContent = "❌ Server error";
-        statusMsg.style.color = "red";
-      });
+        .then(res => {
+          if (res.ok) {
+            statusMsg.style.color = "green";
+            statusMsg.textContent = "✅ Employee deleted successfully";
+            // Reset form
+            select.value = "";
+            empId.value = "";
+            empName.value = "";
+            // Remove deleted option
+            const option = select.querySelector(`option[value="${id}"]`);
+            if (option) option.remove();
+          } else {
+            statusMsg.style.color = "red";
+            statusMsg.textContent = "❌ Delete failed";
+          }
+        })
+        .catch(() => {
+          statusMsg.style.color = "red";
+          statusMsg.textContent = "❌ Server error";
+        });
     }
   </script>
 </body>

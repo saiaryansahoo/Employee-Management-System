@@ -80,10 +80,23 @@
   <script>
     const form = document.getElementById("updateForm");
     const select = document.getElementById("employeeSelect");
+    const statusMessage = document.getElementById("status-message");
+    const token = localStorage.getItem("token");  // your JWT token
 
-    // Load all employees in dropdown
-    fetch("http://localhost:8080/api/employees")
-      .then(res => res.json())
+    if (!token) {
+      statusMessage.style.color = "red";
+      statusMessage.textContent = "❌ You are not logged in. Please login first.";
+    } else {
+      // Load all employees in dropdown with Authorization header
+      fetch("http://localhost:8080/api/employees", {
+        headers: {
+          "Authorization": "Bearer " + token
+        }
+      })
+      .then(res => {
+        if (!res.ok) throw new Error("Unauthorized or failed to fetch employee list");
+        return res.json();
+      })
       .then(data => {
         data.forEach(emp => {
           const option = document.createElement("option");
@@ -91,28 +104,43 @@
           option.textContent = `ID ${emp.id} - ${emp.name}`;
           select.appendChild(option);
         });
+      })
+      .catch(error => {
+        console.error("Error fetching employees:", error);
+        statusMessage.style.color = "red";
+        statusMessage.textContent = "❌ Failed to load employee list. Please login.";
       });
+    }
 
     // Load selected employee data into form
     function loadEmployee() {
       const id = select.value;
       if (!id) return;
 
-      fetch(`http://localhost:8080/api/employees/${id}`)
-        .then(res => res.json())
-        .then(emp => {
-          form.id.value = emp.id;
-          form.name.value = emp.name;
-          form.email.value = emp.email;
-          form.phone.value = emp.phone;
-          form.designation.value = emp.designation;
-          form.department.value = emp.department;
-          form.joining_date.value = emp.joiningDate;
-          form.salary.value = emp.salary;
-        })
-        .catch(() => {
-          document.getElementById("status-message").textContent = "❌ Failed to load employee data.";
-        });
+      fetch(`http://localhost:8080/api/employees/${id}`, {
+        headers: {
+          "Authorization": "Bearer " + token
+        }
+      })
+      .then(res => {
+        if (!res.ok) throw new Error("Unauthorized or failed to fetch employee data");
+        return res.json();
+      })
+      .then(emp => {
+        form.id.value = emp.id;
+        form.name.value = emp.name;
+        form.email.value = emp.email;
+        form.phone.value = emp.phone;
+        form.designation.value = emp.designation;
+        form.department.value = emp.department;
+        form.joining_date.value = emp.joiningDate;
+        form.salary.value = emp.salary;
+        statusMessage.textContent = "";
+      })
+      .catch(() => {
+        statusMessage.style.color = "red";
+        statusMessage.textContent = "❌ Failed to load employee data.";
+      });
     }
 
     // Update employee
@@ -120,6 +148,12 @@
       e.preventDefault();
 
       const id = form.id.value;
+      if (!id) {
+        statusMessage.style.color = "red";
+        statusMessage.textContent = "❌ Please select an employee first.";
+        return;
+      }
+
       const updatedData = {
         name: form.name.value,
         email: form.email.value,
@@ -132,19 +166,25 @@
 
       fetch(`http://localhost:8080/api/employees/update/${id}`, {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + token
+        },
         body: JSON.stringify(updatedData)
       })
-        .then(res => {
-          if (res.ok) {
-            document.getElementById("status-message").textContent = "✅ Employee updated successfully!";
-          } else {
-            document.getElementById("status-message").textContent = "❌ Update failed.";
-          }
-        })
-        .catch(() => {
-          document.getElementById("status-message").textContent = "❌ Server error.";
-        });
+      .then(res => {
+        if (res.ok) {
+          statusMessage.style.color = "green";
+          statusMessage.textContent = "✅ Employee updated successfully!";
+        } else {
+          statusMessage.style.color = "red";
+          statusMessage.textContent = "❌ Update failed.";
+        }
+      })
+      .catch(() => {
+        statusMessage.style.color = "red";
+        statusMessage.textContent = "❌ Server error.";
+      });
     }
   </script>
 </body>

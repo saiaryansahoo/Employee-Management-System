@@ -30,31 +30,61 @@
   </div>
 
   <script>
-    // Fetch and display employees on page load
-    fetch("http://localhost:8080/api/employees")
-      .then(response => response.json())
-      .then(data => {
-        const tbody = document.getElementById("employee-table-body");
-        data.forEach(emp => {
-          const row = document.createElement("tr");
-          row.innerHTML = `
-            <td>${emp.id}</td>
-            <td>${emp.name}</td>
-            <td>${emp.email}</td>
-            <td>${emp.phone}</td>
-            <td>${emp.designation}</td>
-            <td>${emp.department}</td>
-            <td>${emp.joiningDate}</td>
-            <td>${emp.salary}</td>
-          `;
-          tbody.appendChild(row);
-        });
-      })
-      .catch(error => {
-        console.error("Error fetching employees:", error);
-        const tbody = document.getElementById("employee-table-body");
-        tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; color:red;">Error loading data</td></tr>`;
+    const token = localStorage.getItem("token");
+
+    // Redirect to login if token not found
+    if (!token) {
+      alert("❌ You are not logged in. Please login first.");
+      window.location.href = "index.html";
+    }
+
+    // Fetch employee list with token
+    fetch("http://localhost:8080/api/employees", {
+      method: "GET",
+      headers: {
+        "Authorization": "Bearer " + token
+      }
+    })
+    .then(response => {
+      if (!response.ok) {
+        if (response.status === 401) {
+          throw new Error("Unauthorized! Please login again.");
+        } else {
+          throw new Error("Failed to fetch employees.");
+        }
+      }
+      return response.json();
+    })
+    .then(data => {
+      const tbody = document.getElementById("employee-table-body");
+
+      if (!Array.isArray(data)) {
+        throw new Error("Invalid data format from server");
+      }
+
+      data.forEach(emp => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${emp.id}</td>
+          <td>${emp.name}</td>
+          <td>${emp.email}</td>
+          <td>${emp.phone}</td>
+          <td>${emp.designation}</td>
+          <td>${emp.department}</td>
+          <td>${emp.joiningDate}</td>
+          <td>${emp.salary}</td>
+        `;
+        tbody.appendChild(row);
       });
+    })
+    .catch(error => {
+      console.error("Error fetching employees:", error);
+      document.getElementById("employee-table-body").innerHTML = `
+        <tr>
+          <td colspan="8" style="text-align:center; color:red;">❌ ${error.message}</td>
+        </tr>
+      `;
+    });
   </script>
 </body>
 </html>
