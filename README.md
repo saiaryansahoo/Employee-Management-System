@@ -144,6 +144,7 @@ This system helps organizations manage employee data efficiently with features l
    - `index.html` (Login Page)
    - `dashboard.html`
    - `add-employee.html`
+   - `view-employee.html`
    - `update-employee.html`
    - `delete-employee.html`
 
