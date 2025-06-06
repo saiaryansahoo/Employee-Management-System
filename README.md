@@ -204,9 +204,10 @@ This system helps organizations manage employee data efficiently with features l
 
 Created by Aryan
 
-- LinkedIn: [saiaryansahoo](https://www.linkedin.com/in/saiaryansahoo/)
-- GitHub: [saiaryansahoo](https://github.com/saiaryansahoo)  
-- Email: saiaryan.sahoo@gmail.com
+- [LinkedIn](https://www.linkedin.com/in/saiaryansahoo/)
+- [GitHub](https://github.com/saiaryansahoo)
+- [Mail](saiaryan.sahoo@gmail.com)  
+- [Portfoio](https://aryansahoo.me/)
 
 ---
 
