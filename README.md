@@ -77,6 +77,12 @@ This system helps organizations manage employee data efficiently with features l
 
 ---
 
+### View Employee Page
+
+![View Employee](screenshots/view-employee.png)
+
+---
+
 ### Update Employee Page
 
 ![Update Employee](screenshots/update-employee.png)
