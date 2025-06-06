@@ -43,8 +43,6 @@ This system helps organizations manage employee data efficiently with features l
 
 - ⚙️**Input validation and error handling**
 
--📡**Tested endpoints using **Postman**
-
 ---
 
 ## Tech Stack Used
