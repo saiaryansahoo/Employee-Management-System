@@ -20,6 +20,12 @@ This system helps organizations manage employee data efficiently with features l
 
 ## Features Implemented
 
+- 🔑**Login Page:**
+    -User-friendly login interface for secure access
+    -Authenticates users using credentials via backend API
+    -On successful login, stores JWT token for authorized access
+    -Displays real-time validation messages for incorrect attempts
+
 - 🔐**Authentication:**
   - JWT token-based security for all API calls
   - Authorization header used in frontend API requests
