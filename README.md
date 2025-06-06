@@ -206,7 +206,7 @@ Created by Aryan
 
 - [LinkedIn](https://www.linkedin.com/in/saiaryansahoo/)
 - [GitHub](https://github.com/saiaryansahoo)
-- [Mail](saiaryan.sahoo@gmail.com)  
+- [Mail](mailto:saiaryan.sahoo@gmail.com)  
 - [Portfoio](https://aryansahoo.me/)
 
 ---
