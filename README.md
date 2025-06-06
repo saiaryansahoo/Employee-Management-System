@@ -59,6 +59,18 @@ This system helps organizations manage employee data efficiently with features l
 
 ## Screenshots
 
+### Login Page
+
+![Login Page](screenshots/login.png)
+
+---
+
+### Dashboard Page
+
+![Dashboard](screenshots/dashboard.png)
+
+---
+
 ### Add Employee Page
 
 ![Add Employee](screenshots/add-employee.png)
@@ -172,12 +184,6 @@ This system helps organizations manage employee data efficiently with features l
 | POST   | /api/employees/add            | Add new employee         |
 | PUT    | /api/employees/update/{id}   | Update employee details  |
 | DELETE | /api/employees/delete/{id}   | Delete employee          |
-
----
-
-## License
-
-This project is licensed under the MIT License.
 
 ---
 
